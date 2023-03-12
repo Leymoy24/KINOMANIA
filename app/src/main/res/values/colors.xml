@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="backgroundColor">#FEF0FF</color>
+    <color name="backgroundDarkColor">#D6C8FF</color>
+    <color name="textColor">#7E6BC4</color>
+    <color name="formsColor">#C79ECF</color>
+    <color name="teal_200">#ffffff</color>
+</resources>
