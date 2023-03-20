@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "785661107115",
+    "project_id": "kinomania-efe1a",
+    "storage_bucket": "kinomania-efe1a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785661107115:android:c5b096650d8f472485d0ee",
+        "android_client_info": {
+          "package_name": "com.example.kinomania"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785661107115-0n985l8pnirv3l4k8r5cgfbs5srb79qs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPRjuqPx3UM9_l-ELXNT4d-_vKAGY-Nxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785661107115-0n985l8pnirv3l4k8r5cgfbs5srb79qs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
