@@ -1,14 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_films"
+    android:name="com.example.kinomania.FragmentFilms"
+    android:background="@color/backgroundColor"
+    tools:layout="@layout/fragment_films"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FragmentFilms">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <View
+        android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="80dp"
+        android:background="@color/backgroundDarkColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/FilmTextView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toTopOf="@id/search_film"
+        android:layout_marginTop="7dp"
+        android:gravity="center"
+        android:text="фильмы"
+        android:textColor="@color/textColor"
+        android:textSize="40dp"
+        tools:ignore="MissingConstraints" />
+
+    <SearchView
+        android:id="@+id/search_film"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/backgroundColor"
+        android:focusable="false"
+        android:iconifiedByDefault="false"
+        android:queryHint="Найти фильм..."
+        android:searchHintIcon="@color/backgroundDarkColor"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_films"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="160dp"
+        android:layout_marginBottom="80dp"
+        tools:ignore="MissingConstraints" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

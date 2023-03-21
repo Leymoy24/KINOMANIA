@@ -24,7 +24,7 @@ public class FragmentCinemas extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding =FragmentCinemasBinding.inflate(inflater, container, false);
+        binding = FragmentCinemasBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
     }
