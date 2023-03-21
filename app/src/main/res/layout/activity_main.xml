@@ -7,73 +7,26 @@
     android:background="@color/backgroundColor"
     tools:context=".MainActivity">
 
-    <View
-        android:id="@+id/topPanel"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/backgroundDarkColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.fragment.app.FragmentContainerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints" />
-    <LinearLayout
-        android:id="@+id/navigation_bar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/backgroundDarkColor"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/cinema_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/cinema_icon" />
-
-        <ImageView
-            android:id="@+id/film_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/film_icon" />
-
-        <ImageView
-            android:id="@+id/lovely_cinemas_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/lovelycinemas_icon" />
-
-        <ImageView
-            android:id="@+id/settings_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/settings_icon" />
-    </LinearLayout>
-        ></androidx.fragment.app.FragmentContainerView>
-
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_cinemas"
+        android:id="@+id/fragment_container_view_navigation_bar"
+        android:name="com.example.kinomania.FragmentNavigationBar"
+        tools:layout="@layout/fragment_navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/navigation_bar"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"></androidx.fragment.app.FragmentContainerView>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view_cinemas"
+        android:name="com.example.kinomania.FragmentCinemas"
+        tools:layout="@layout/fragment_cinemas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/fragment_container_view_navigation_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
 
 </android.support.constraint.ConstraintLayout>

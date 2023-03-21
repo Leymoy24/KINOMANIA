@@ -10,12 +10,21 @@
     tools:layout="@layout/fragment_cinemas"
     tools:context=".FragmentCinemas">
 
+    <View
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/backgroundDarkColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/cinemaTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toTopOf="@id/recycler_view_cinemas"
         android:layout_marginTop="7dp"
         android:gravity="center"
         android:text="кинотеатры"
@@ -24,6 +33,7 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_cinemas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
