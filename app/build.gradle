@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.kinomania'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.kinomania"
-        minSdk 24
-        targetSdk 32
+        minSdk 27
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -27,24 +27,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildFeatures {
-        viewBinding true;
-    }
+
 }
 
 dependencies {
 
     //noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-auth:21.2.0'
+    implementation 'com.google.android.material:material:1.8.0'
     testImplementation 'junit:junit:4.13.2'
     //noinspection GradleCompatible
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
-    implementation 'androidx.fragment:fragment:1.5.5'
+    implementation 'androidx.fragment:fragment:1.5.6'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
 }

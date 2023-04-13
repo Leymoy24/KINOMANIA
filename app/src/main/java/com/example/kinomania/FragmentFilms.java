@@ -1,19 +1,17 @@
 package com.example.kinomania;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.kinomania.databinding.FragmentCinemasBinding;
-import com.example.kinomania.databinding.FragmentFilmsBinding;
+import androidx.fragment.app.Fragment;
+
 
 public class FragmentFilms extends Fragment {
 
-    FragmentFilmsBinding binding;
     public FragmentFilms() {
-        // Required empty public constructor
+        super(R.layout.fragment_films);
     }
 
     @Override
@@ -25,7 +23,6 @@ public class FragmentFilms extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentFilmsBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        return inflater.inflate(R.layout.fragment_films, container, false);
     }
 }

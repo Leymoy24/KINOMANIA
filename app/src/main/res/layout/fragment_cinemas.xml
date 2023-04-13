@@ -8,7 +8,8 @@
     android:background="@color/backgroundColor"
     android:name="com.example.kinomania.FragmentCinemas"
     tools:layout="@layout/fragment_cinemas"
-    tools:context=".FragmentCinemas">
+    tools:context=".FragmentCinemas"
+    tools:ignore="MissingClass">
 
     <View
         android:id="@+id/topPanel"

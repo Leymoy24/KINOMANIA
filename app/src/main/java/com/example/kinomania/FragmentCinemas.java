@@ -1,18 +1,30 @@
 package com.example.kinomania;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.kinomania.databinding.FragmentCinemasBinding;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 
 public class FragmentCinemas extends Fragment {
-    FragmentCinemasBinding binding;
-    public FragmentCinemas() {
 
+    MainActivity mainActivity;
+
+
+    public FragmentCinemas(){
+        super(R.layout.fragment_cinemas);
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) context;
     }
 
     @Override
@@ -24,8 +36,6 @@ public class FragmentCinemas extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentCinemasBinding.inflate(inflater, container, false);
-
-        return binding.getRoot();
+        return inflater.inflate(R.layout.fragment_cinemas, container, false);
     }
 }
