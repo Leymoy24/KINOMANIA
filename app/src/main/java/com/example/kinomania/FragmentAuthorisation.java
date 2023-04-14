@@ -15,12 +15,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class FragmentProfile extends Fragment {
+public class FragmentAuthorisation extends Fragment {
 
     MainActivity mainActivity;
 
-    public FragmentProfile() {
-        super(R.layout.fragment_profile);
+    public FragmentAuthorisation() {
+       super(R.layout.fragment_authorisation);
     }
 
     @Override
@@ -37,33 +37,33 @@ public class FragmentProfile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_authorisation, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button button_registration = view.findViewById(R.id.GoToRegistration);
-        ImageButton button_registration_left = view.findViewById(R.id.left_pointer);
+        Button button_entry = view.findViewById(R.id.GoToAuth);
+        ImageButton button_entry_right = view.findViewById(R.id.right_pointer);
 
-        button_registration.setOnClickListener(v-> {
+        button_entry_right.setOnClickListener(v-> {
             View mainContainer = mainActivity.findViewById(R.id.fragment_container_view);
             NavController navController = Navigation.findNavController(mainContainer);
             int currentDestination = navController.getCurrentDestination().getId();
-            int destination = R.id.fragmentAuthorisation;
+            int destination = R.id.fragmentProfile;
             if(currentDestination != destination){
-                navController.navigate(R.id.action_fragmentProfile_to_fragmentAuthorisation);
+                navController.navigate(R.id.action_fragmentAuthorisation_to_fragmentProfile);
             }
         });
 
-        button_registration_left.setOnClickListener(v-> { // первая и вторая кнопка делают одно и то же действие
+        button_entry.setOnClickListener(v-> { // первая и вторая кнопка делают одно и то же действие
             View mainContainer = mainActivity.findViewById(R.id.fragment_container_view);
             NavController navController = Navigation.findNavController(mainContainer);
             int currentDestination = navController.getCurrentDestination().getId();
-            int destination = R.id.fragmentAuthorisation;
+            int destination = R.id.fragmentProfile;
             if(currentDestination != destination){
-                navController.navigate(R.id.action_fragmentProfile_to_fragmentAuthorisation);
+                navController.navigate(R.id.action_fragmentAuthorisation_to_fragmentProfile);
             }
         });
     }

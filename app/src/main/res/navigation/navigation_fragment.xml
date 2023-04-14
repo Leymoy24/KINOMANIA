@@ -3,26 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_fragment"
-    app:startDestination="@id/fragmentNavigationBar">
+    app:startDestination="@id/fragmentProfile">
 
     <fragment
         android:id="@+id/fragmentNavigationBar"
         android:name="com.example.kinomania.FragmentNavigationBar"
         android:label="fragment_navigation_bar"
-        tools:layout="@layout/fragment_navigation_bar" >
-        <action
-            android:id="@+id/action_fragmentNavigationBar_to_fragmentProfile"
-            app:destination="@id/fragmentProfile" />
-        <action
-            android:id="@+id/action_fragmentNavigationBar_to_fragmentFavourites"
-            app:destination="@id/fragmentFavourites" />
-        <action
-            android:id="@+id/action_fragmentNavigationBar_to_fragmentFilms"
-            app:destination="@id/fragmentFilms" />
-        <action
-            android:id="@+id/action_fragmentNavigationBar_to_fragmentCinemas"
-            app:destination="@id/fragmentCinemas" />
-    </fragment>
+        tools:layout="@layout/fragment_navigation_bar" />
     <fragment
         android:id="@+id/fragmentCinemas"
         android:name="com.example.kinomania.FragmentCinemas"
@@ -42,5 +29,18 @@
         android:id="@+id/fragmentProfile"
         android:name="com.example.kinomania.FragmentProfile"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_fragmentProfile_to_fragmentAuthorisation"
+            app:destination="@id/fragmentAuthorisation" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAuthorisation"
+        android:name="com.example.kinomania.FragmentAuthorisation"
+        android:label="fragment_authorisation"
+        tools:layout="@layout/fragment_authorisation" >
+        <action
+            android:id="@+id/action_fragmentAuthorisation_to_fragmentProfile"
+            app:destination="@id/fragmentProfile" />
+    </fragment>
 </navigation>

@@ -24,12 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toTopOf="@id/search_film"
-        android:layout_marginTop="7dp"
         android:gravity="center"
         android:text="фильмы"
         android:textColor="@color/textColor"
         android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@id/search_film"
+        app:layout_constraintStart_toStartOf="@+id/topPanel"
+        app:layout_constraintTop_toTopOf="@+id/topPanel"
         tools:ignore="MissingConstraints" />
 
     <SearchView
@@ -41,9 +42,11 @@
         android:iconifiedByDefault="false"
         android:queryHint="Найти фильм..."
         android:searchHintIcon="@color/backgroundDarkColor"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="80dp" />
+        app:layout_constraintBottom_toTopOf="@+id/recycler_view_films"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topPanel"
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_films"

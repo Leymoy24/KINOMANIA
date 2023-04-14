@@ -25,12 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        app:layout_constraintBottom_toTopOf="@id/search_cinema"
-        android:layout_marginTop="7dp"
         android:gravity="center"
         android:text="кинотеатры"
         android:textColor="@color/textColor"
         android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@id/search_cinema"
+        app:layout_constraintEnd_toEndOf="@+id/topPanel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <SearchView
@@ -42,9 +44,11 @@
         android:iconifiedByDefault="false"
         android:queryHint="Найти кинотеатр..."
         android:searchHintIcon="@color/backgroundDarkColor"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="80dp" />
+        app:layout_constraintBottom_toTopOf="@+id/recycler_view_cinemas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topPanel"
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_cinemas"
