@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_fragment"
+    app:startDestination="@id/fragmentNavigationBar">
+
+    <fragment
+        android:id="@+id/fragmentNavigationBar"
+        android:name="com.example.kinomania.FragmentNavigationBar"
+        android:label="fragment_navigation_bar"
+        tools:layout="@layout/fragment_navigation_bar" >
+        <action
+            android:id="@+id/action_fragmentNavigationBar_to_fragmentProfile"
+            app:destination="@id/fragmentProfile" />
+        <action
+            android:id="@+id/action_fragmentNavigationBar_to_fragmentFavourites"
+            app:destination="@id/fragmentFavourites" />
+        <action
+            android:id="@+id/action_fragmentNavigationBar_to_fragmentFilms"
+            app:destination="@id/fragmentFilms" />
+        <action
+            android:id="@+id/action_fragmentNavigationBar_to_fragmentCinemas"
+            app:destination="@id/fragmentCinemas" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCinemas"
+        android:name="com.example.kinomania.FragmentCinemas"
+        android:label="fragment_cinemas"
+        tools:layout="@layout/fragment_cinemas" />
+    <fragment
+        android:id="@+id/fragmentFilms"
+        android:name="com.example.kinomania.FragmentFilms"
+        android:label="fragment_films"
+        tools:layout="@layout/fragment_films" />
+    <fragment
+        android:id="@+id/fragmentFavourites"
+        android:name="com.example.kinomania.FragmentFavourites"
+        android:label="fragment_favourites"
+        tools:layout="@layout/fragment_favourites" />
+    <fragment
+        android:id="@+id/fragmentProfile"
+        android:name="com.example.kinomania.FragmentProfile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
