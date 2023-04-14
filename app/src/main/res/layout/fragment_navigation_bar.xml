@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            app:srcCompat="@drawable/settings_icon" />
+            app:srcCompat="@drawable/user_account" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
