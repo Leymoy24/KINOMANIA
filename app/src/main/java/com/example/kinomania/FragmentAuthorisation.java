@@ -47,9 +47,10 @@ public class FragmentAuthorisation extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+        //mAuth = FirebaseAuth.getInstance();
     }
 
+    /*
     // [START on_start_check_user]
     @Override
     public void onStart() {
@@ -127,7 +128,7 @@ public class FragmentAuthorisation extends Fragment {
     private void updateUI(FirebaseUser user) {
 
     }
-
+*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
