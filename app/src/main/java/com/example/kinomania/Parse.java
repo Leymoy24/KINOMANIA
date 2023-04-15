@@ -1,12 +1,5 @@
 package com.example.kinomania;
 
-import android.app.ProgressDialog;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-
-import com.example.kinomania.MainActivity;
 import com.example.kinomania.Parser.ParseCinemaAddresses;
 import com.example.kinomania.Parser.ParseCinemaNames;
 import com.example.kinomania.Parser.ParseFilmCountry;
@@ -17,7 +10,6 @@ import com.example.kinomania.Parser.ParseFilmNames;
 import com.example.kinomania.Parser.ParseFilmPrice;
 import com.example.kinomania.Parser.ParseFilmSessions;
 import com.example.kinomania.Parser.ParseFilmURL;
-import com.google.android.gms.tasks.Task;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,15 +17,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class Parse extends AsyncTask<Void, Void, Void> {
+public class Parse {
     public String BaseUrl = "https://msk.kinoafisha.info/cinema/";
 
     public List<String> Name;
@@ -46,31 +37,17 @@ public class Parse extends AsyncTask<Void, Void, Void> {
     public List<String> Genre;
     public List<String> Description;
     public List<String> FilmUrl;
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
+    public List<String> FilmImage;
 
-    @Override
-    protected Void doInBackground(Void... voids) {
-        try {
-            Document doc = Jsoup.connect(BaseUrl).get();
-            CinemaWorker(doc);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void CinemaWorker(Document document) throws IOException {
+    public List<Cinema> CinemaWorker(Document document) throws IOException {
         ParseCinemaNames cinemaNames = new ParseCinemaNames();
         ParseCinemaAddresses cinemaAddresses = new ParseCinemaAddresses();
         Name = cinemaNames.ParseName(document);
         CinemaUrl = cinemaNames.ParseUrls(document);
-        for (String name : Name)
+        /*for (String name : Name)
         {
             //Console.WriteLine(name); должны в БД помещать
-        }
+        }*/
 
         for (int i = 0; i < CinemaUrl.size(); i++)
         {
@@ -78,7 +55,8 @@ public class Parse extends AsyncTask<Void, Void, Void> {
             Address.add(cinemaAddresses.ParseAddress(document));
         }
 
-        FilmWorker(CinemaUrl);
+        //как раз тут и надо то же самое делать
+        return null;
     }
 
     private List<String> SetData()
@@ -96,11 +74,11 @@ public class Parse extends AsyncTask<Void, Void, Void> {
         return days;
     }
 
-    private void FilmWorker(List<String> CinemaUrl) throws IOException
+    public List<Film> FilmWorker(List<String> CinemaUrl) throws IOException
     {
         ParseFilmNames filmNames = new ParseFilmNames();
         ParseFilmGenres filmgenre = new ParseFilmGenres();
-        ParseFilmImage filmimage = new ParseFilmImage();
+        ParseFilmImage filmImage = new ParseFilmImage();
         ParseFilmURL filmurl = new ParseFilmURL();
         ParseFilmSessions filmsessions = new ParseFilmSessions();
         ParseFilmPrice filmprice = new ParseFilmPrice();
@@ -116,15 +94,9 @@ public class Parse extends AsyncTask<Void, Void, Void> {
                 String ListFilmURL = cinemaurl + ScheduleUrl + day + MovieUrl;
                 Document document = Jsoup.connect(ListFilmURL).get();
 
-                Document document_image = Jsoup.connect("https://www.film.ru/soon/year/2023").get();
                 FilmName = filmNames.ParseName(document);
                 FilmCountry = filmCountry.ParseCountry(document);
 
-                /*for (int k = 5; k < FilmName.size(); k++)
-                {
-                    String ImageUrl = filmimage.ParseImage(document_image, FilmName.get(k));
-                    ImageUrl= filmimage.ParseImage((IHtmlDocument)document);
-                }*/
                 for(String name : FilmName)
                 {
                     Elements items = document.select("[data-schedulesearch-item*='" + name + "'] span.session_time");
@@ -143,9 +115,11 @@ public class Parse extends AsyncTask<Void, Void, Void> {
                         //Console.WriteLine("   " + Session[k].ToString() + "   " + Price[k].ToString());
 
                     }
+                    FilmImage = Collections.singletonList(filmImage.ParseImage(document, name));
                     Session.clear();
                     Price.clear();
                 }
+
                 Genre = filmgenre.ParseGenre(document);
                 Description = null;
                 FilmUrl = filmurl.ParseUrlOfFilm(document);
@@ -160,13 +134,8 @@ public class Parse extends AsyncTask<Void, Void, Void> {
                 Genre.clear();
                 Description.clear();
             }
-
-        }
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-
+        } // нужно добавлять в список созданные данные с помошью конструктора в классе Film а затем его вернуть
+        // аналогично с Cinema
+        return null;
     }
 }

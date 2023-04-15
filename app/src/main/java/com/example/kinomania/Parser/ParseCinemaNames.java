@@ -18,7 +18,7 @@ public class ParseCinemaNames {
         return list;
     }
 
-    public List<String> ParseUrls(Document doc)
+    public static List<String> ParseUrls(Document doc)
     {
         List list = null;
         Elements items = doc.select("a.cinemaList_ref");

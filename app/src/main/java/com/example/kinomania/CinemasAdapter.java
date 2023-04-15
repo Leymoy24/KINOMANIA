@@ -57,7 +57,7 @@ public class CinemasAdapter extends RecyclerView.Adapter<CinemasAdapter.CinemasV
         holder.cinemaTextView.setText(cinema.getName());
         holder.addressTextView.setText(cinema.getAddress());
 
-        // Обработчик нажатия на элемент
+        /* Обработчик нажатия на элемент
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +65,7 @@ public class CinemasAdapter extends RecyclerView.Adapter<CinemasAdapter.CinemasV
                     listener.onItemClick(position);
                 }
             }
-        });
+        });*/
     }
 
     @Override

@@ -57,9 +57,9 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
         holder.nameTextView.setText(film.getName());
         holder.genreTextView.setText(film.getGenre());
         holder.countryTextView.setText(film.getCountry());
-        holder.imageFilm.setImageResource(film.getFilmImage());
+        //holder.imageFilm.setImage(film.getFilmImage());
 
-        // Обработчик нажатия на элемент
+        /* Обработчик нажатия на элемент
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +67,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
                     listener.onItemClick(position);
                 }
             }
-        });
+        });*/
     }
 
     @Override
