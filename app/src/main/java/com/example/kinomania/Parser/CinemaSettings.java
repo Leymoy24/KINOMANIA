@@ -2,37 +2,41 @@ package com.example.kinomania.Parser;
 
 public class CinemaSettings {
     public String BaseUrl = "https://msk.kinoafisha.info/cinema/";
-    public String[] CinemaUrl;
-    public String[] Name;
-    public String[] Address;
+    public String CinemaUrl;
+    public String Name;
+    public String Address;
 
-    CinemaSettings(){}
+    public CinemaSettings( String cinemaUrl, String name, String address) {
+        CinemaUrl = cinemaUrl;
+        Name = name;
+        Address = address;
+    }
 
     public String getBaseUrl() {
         return BaseUrl;
     }
 
-    public String[] getName() {
+    public String getName() {
         return Name;
     }
 
-    public String[] getAddress() {
+    public String getAddress() {
         return Address;
     }
 
-    public String[] getCinemaUrl() {
+    public String getCinemaUrl() {
         return CinemaUrl;
     }
 
-    public void setAddress(String[] address) {
+    public void setAddress(String address) {
         Address = address;
     }
 
-    public void setCinemaUrl(String[] cinemaUrl) {
+    public void setCinemaUrl(String cinemaUrl) {
         CinemaUrl = cinemaUrl;
     }
 
-    public void setName(String[] name) {
+    public void setName(String name) {
         Name = name;
     }
 }

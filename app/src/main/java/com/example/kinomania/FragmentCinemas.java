@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kinomania.Parser.CinemaSettings;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -32,6 +34,7 @@ public class FragmentCinemas extends Fragment {
     private RecyclerView recyclerView;
     private CinemasAdapter adapter;
     private ArrayList<Cinema> cinemaItems = new ArrayList<>();
+    private ArrayList<CinemaSettings> cinemaSettings = new ArrayList<>();
     private ProgressBar progressBar;
 
     public FragmentCinemas(){
@@ -89,7 +92,11 @@ public class FragmentCinemas extends Fragment {
         protected Void doInBackground(Void... voids) {
             try{
                 Document doc = Jsoup.connect(BaseUrl).get();
-                cinemaItems.addAll(parse.CinemaWorker(doc));
+                cinemaSettings.addAll(parse.CinemaWorker(doc));
+                for(int i = 0; i<cinemaSettings.size(); i++){
+                    Cinema cinema = new Cinema(cinemaSettings.get(i).getName(), cinemaSettings.get(i).getAddress());
+                    cinemaItems.add(cinema);
+                }
             }catch (IOException e){
                 e.printStackTrace();
             }

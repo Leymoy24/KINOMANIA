@@ -1,5 +1,7 @@
 package com.example.kinomania;
 
+import com.example.kinomania.Parser.CinemaSettings;
+import com.example.kinomania.Parser.FilmSettings;
 import com.example.kinomania.Parser.ParseCinemaAddresses;
 import com.example.kinomania.Parser.ParseCinemaNames;
 import com.example.kinomania.Parser.ParseFilmCountry;
@@ -27,6 +29,8 @@ import java.util.List;
 public class Parse {
     public String BaseUrl = "https://msk.kinoafisha.info/cinema/";
 
+    public List<CinemaSettings> cinemaSettings_;
+    public List<FilmSettings> filmSettings_;
     public List<String> Name;
     public List<String> CinemaUrl;
     public List<String> Address;
@@ -39,15 +43,11 @@ public class Parse {
     public List<String> FilmUrl;
     public List<String> FilmImage;
 
-    public List<Cinema> CinemaWorker(Document document) throws IOException {
+    public Collection<? extends CinemaSettings> CinemaWorker(Document document) throws IOException {
         ParseCinemaNames cinemaNames = new ParseCinemaNames();
         ParseCinemaAddresses cinemaAddresses = new ParseCinemaAddresses();
         Name = cinemaNames.ParseName(document);
         CinemaUrl = cinemaNames.ParseUrls(document);
-        /*for (String name : Name)
-        {
-            //Console.WriteLine(name); должны в БД помещать
-        }*/
 
         for (int i = 0; i < CinemaUrl.size(); i++)
         {
@@ -55,8 +55,12 @@ public class Parse {
             Address.add(cinemaAddresses.ParseAddress(document));
         }
 
-        //как раз тут и надо то же самое делать
-        return null;
+        for(int i = 0; i< Name.size(); i++){
+            CinemaSettings cinemaSettings = new CinemaSettings(CinemaUrl.get(i), Name.get(i), Address.get(i));
+            cinemaSettings_.add(cinemaSettings);
+        }
+
+        return cinemaSettings_;
     }
 
     private List<String> SetData()
@@ -70,11 +74,10 @@ public class Parse {
             dt.roll(Calendar.DATE, 1);
             days.add(df.format(dt.getTime()));
         }
-
         return days;
     }
 
-    public List<Film> FilmWorker(List<String> CinemaUrl) throws IOException
+    public Collection<? extends FilmSettings> FilmWorker(List<String> CinemaUrl, String date) throws IOException
     {
         ParseFilmNames filmNames = new ParseFilmNames();
         ParseFilmGenres filmgenre = new ParseFilmGenres();
@@ -84,58 +87,55 @@ public class Parse {
         ParseFilmPrice filmprice = new ParseFilmPrice();
         ParseFilmDescription filmdescription = new ParseFilmDescription();
         ParseFilmCountry filmCountry = new ParseFilmCountry();
-        List<String> days = SetData();
         for(String cinemaurl : CinemaUrl)
         {
-            for(String day : days) // получаю список фильмов на сегодня, завтра, послезавтра, послепослезавтра
+            String ScheduleUrl = "schedule/?date=";
+            String MovieUrl = "&order=movie";
+            String ListFilmURL = cinemaurl + ScheduleUrl + date + MovieUrl;
+            Document document = Jsoup.connect(ListFilmURL).get();
+
+            FilmName = filmNames.ParseName(document);
+            FilmCountry = filmCountry.ParseCountry(document);
+            Genre = filmgenre.ParseGenre(document);
+            FilmUrl = filmurl.ParseUrlOfFilm(document);
+
+            Description = null;
+
+            for(int i = 0; i <FilmUrl.size(); i++)
             {
-                String ScheduleUrl = "schedule/?date=";
-                String MovieUrl = "&order=movie";
-                String ListFilmURL = cinemaurl + ScheduleUrl + day + MovieUrl;
-                Document document = Jsoup.connect(ListFilmURL).get();
-
-                FilmName = filmNames.ParseName(document);
-                FilmCountry = filmCountry.ParseCountry(document);
-
-                for(String name : FilmName)
-                {
-                    Elements items = document.select("[data-schedulesearch-item*='" + name + "'] span.session_time");
-                    Elements prices = document.select("[data-schedulesearch-item*='" + name + "'] span.session_price");
-
-                    for (Element item : items)
-                    {
-                        Session.add(item.text());
-                    }
-                    for(Element price : prices)
-                    {
-                        Price.add(price.text());
-                    }
-                    for (int k = 0; k < Session.size(); k++)
-                    {
-                        //Console.WriteLine("   " + Session[k].ToString() + "   " + Price[k].ToString());
-
-                    }
-                    FilmImage = Collections.singletonList(filmImage.ParseImage(document, name));
-                    Session.clear();
-                    Price.clear();
-                }
-
-                Genre = filmgenre.ParseGenre(document);
-                Description = null;
-                FilmUrl = filmurl.ParseUrlOfFilm(document);
-                for (String url : FilmUrl)
-                {
-                    document = Jsoup.connect(url).get();
-                    Description = Collections.singletonList(filmdescription.ParseDescription(document));
-                }
-
-                FilmName.clear();
-                FilmUrl.clear();
-                Genre.clear();
-                Description.clear();
+                Document document_ = Jsoup.connect(FilmUrl.get(i)).get();
+                Description.addAll(Collections.singletonList(filmdescription.ParseDescription(document_)));
+                FilmImage.addAll(Collections.singletonList(filmImage.ParseImage(document, FilmName.get(i))));
             }
-        } // нужно добавлять в список созданные данные с помошью конструктора в классе Film а затем его вернуть
-        // аналогично с Cinema
-        return null;
+
+            for(int i = 0; i< FilmName.size(); i++)
+            {
+                Elements items = document.select("[data-schedulesearch-item*='" + FilmName.get(i) + "'] span.session_time");
+                Elements prices = document.select("[data-schedulesearch-item*='" + FilmName.get(i) + "'] span.session_price");
+
+                for (Element item : items)
+                {
+                    Session.add(item.text());
+                }
+                for(Element price : prices)
+                {
+                    Price.add(price.text());
+                }
+
+                FilmSettings filmSettings = new FilmSettings(FilmName.get(i), date, Genre.get(i), Description.get(i),
+                        FilmImage.get(i), FilmUrl.get(i), FilmCountry.get(i), Session, Price);
+                        filmSettings_.add(filmSettings);
+
+                Session.clear();
+                Price.clear();
+            }
+
+            Description.clear();
+            FilmName.clear();
+            FilmUrl.clear();
+            Genre.clear();
+            FilmCountry.clear();;
+        }
+        return filmSettings_;
     }
 }

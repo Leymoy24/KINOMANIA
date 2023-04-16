@@ -10,7 +10,7 @@ public class ParseFilmDescription {
     public String ParseDescription(Document document)
     {
         String list = "";
-        Elements items = document.select("p");
+        Elements items = document.select("div.visualEditorInsertion.filmDesc_editor.more_content").select("p");
         list = items.text();
         return list;
     }
