@@ -1,7 +1,6 @@
 package com.example.kinomania.Parser;
 
 public class CinemaSettings {
-    public String BaseUrl = "https://msk.kinoafisha.info/cinema/";
     public String CinemaUrl;
     public String Name;
     public String Address;
@@ -10,10 +9,6 @@ public class CinemaSettings {
         CinemaUrl = cinemaUrl;
         Name = name;
         Address = address;
-    }
-
-    public String getBaseUrl() {
-        return BaseUrl;
     }
 
     public String getName() {

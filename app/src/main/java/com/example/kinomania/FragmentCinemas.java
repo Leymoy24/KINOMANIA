@@ -1,9 +1,11 @@
 package com.example.kinomania;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +23,14 @@ import com.example.kinomania.Parser.CinemaSettings;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class FragmentCinemas extends Fragment {
@@ -36,12 +43,13 @@ public class FragmentCinemas extends Fragment {
     private ArrayList<Cinema> cinemaItems = new ArrayList<>();
     private ArrayList<CinemaSettings> cinemaSettings = new ArrayList<>();
     private ProgressBar progressBar;
+    Runnable runnable;
+    Thread secThread;
 
     public FragmentCinemas(){
         super(R.layout.fragment_cinemas);
         parse = new Parse();
     }
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,6 +60,7 @@ public class FragmentCinemas extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //init();
     }
 
     @Override
@@ -68,9 +77,80 @@ public class FragmentCinemas extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
+
         adapter = new CinemasAdapter(mainActivity, cinemaItems);
+        recyclerView.setAdapter(adapter);
+
+        Content content = new Content();
+        content.execute();
     }
 
+    /*private void init(){
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_in));
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                getWeb();
+            }
+        };
+        secThread = new Thread(runnable);
+        secThread.start();
+    }
+
+    private void getWeb(){
+        try {
+            Document doc = Jsoup.connect(BaseUrl).get();
+
+            List<String> listName = null;
+            Elements items = doc.select("div.cinemaList_name");
+            for (Element item : items)
+            {
+                listName.add(item.text());
+            }
+
+            List<String> list = null;
+            Elements itemsurl = doc.select("a.cinemaList_ref");
+            for (Element item : itemsurl)
+            {
+                String value = item.attr("href");
+                list.add(value);
+            }
+
+            for (int i = 0; i < list.size(); i++) {
+                Document document = Jsoup.connect(list.get(i)).get();
+                String listaddr = "";
+                Elements itemsaddr = document.select("span.theaterInfo_dataAddr");
+                for (Element item : itemsaddr) {
+                    listaddr = item.text();
+                }
+                Cinema cinema = new Cinema(listName.get(i), listaddr);
+                cinemaItems.add(cinema);
+            }
+
+            cinemaSettings.addAll(parse.CinemaWorker(doc));
+            for(int i = 0; i < cinemaSettings.size(); i++) {
+                Cinema cinema = new Cinema(cinemaSettings.get(i).getName(), cinemaSettings.get(i).getAddress());
+                cinemaItems.add(cinema);
+            }
+
+            progressBar.setVisibility(View.GONE);
+            progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_out));
+
+            mainActivity.runOnUiThread(new Runnable() {
+                public void run(){
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+
+    @SuppressLint("StaticFieldLeak")
     public class Content extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -88,18 +168,74 @@ public class FragmentCinemas extends Fragment {
             adapter.notifyDataSetChanged();
         }
 
+        @SuppressLint("WrongThread")
         @Override
         protected Void doInBackground(Void... voids) {
             try{
                 Document doc = Jsoup.connect(BaseUrl).get();
-                cinemaSettings.addAll(parse.CinemaWorker(doc));
-                for(int i = 0; i<cinemaSettings.size(); i++){
-                    Cinema cinema = new Cinema(cinemaSettings.get(i).getName(), cinemaSettings.get(i).getAddress());
+                Log.i("Logcat", "connect to webpage");
+                Elements itemsUrl = doc.select("a.cinemaList_ref");
+                ArrayList<String> listOfUrls = new ArrayList<>();
+                for(Element url : itemsUrl) {
+                    String value = url.attr("href"); // ссылки на кинотеатры
+                    listOfUrls.add(value);
+                    Log.i("Logcat", "Url: " + value);
+                }
+
+                Document docu = Jsoup.connect("https://msk.kinoafisha.info/cinema/map/").get();
+                Elements itemsName = docu.select("div.cinemaList_name"); // имена кинотеатров
+                Log.i("Logcat", "searched all names");
+
+                Elements addr = docu.select("div.cinemaList_addr.as-mobile"); // адреса кинотеатров
+                for (int i = 0; i < itemsName.size(); i++)
+                {
+                    Cinema cinema = new Cinema(itemsName.get(i).text(), addr.get(i).text());
                     cinemaItems.add(cinema);
                 }
+
+                /*for (int i = 0; i < 10; i++) !!
+                {
+                    String value = itemsurl.get(i).attr("href");
+
+
+                    Document document = Jsoup.connect(value).get();
+                    Thread.sleep(700);
+                    Log.i("Logcat", "connect to other webpage");
+
+                    Element itemsaddr = document.selectFirst("span.theaterInfo_dataAddr");
+                    String listaddr = "address here...";
+                    if(itemsaddr != null)
+                    {
+                        listaddr = itemsaddr.data();
+                    }
+                    Log.i("Logcat", "Address: " + listaddr);
+
+                    Cinema cinema = new Cinema(itemsName.get(i).text(), listaddr);
+                    cinemaItems.add(cinema); !!
+                }*/
+
+                //Log.i("Logcat", "search all urls");
+                /*for (int i = 0; i < listName.size(); i++) {
+                    //Document document = Jsoup.connect(list.get(i)).get();
+                    //String listaddr = "";
+                    //Elements itemsaddr = document.select("span.theaterInfo_dataAddr");
+                   // for (Element item : itemsaddr) {
+                   //     listaddr = item.text();
+                    //}
+                    Cinema cinema = new Cinema(listName.get(i), "listaddr");
+                    cinemaItems.add(cinema);
+                }*/
+                //Log.i("Logcat", "search all addresses");
+                /*cinemaSettings.addAll(parse.CinemaWorker(doc));
+                for(int i = 0; i < cinemaSettings.size(); i++){
+                    Cinema cinema = new Cinema(cinemaSettings.get(i).getName(), cinemaSettings.get(i).getAddress());
+                    cinemaItems.add(cinema);
+                }*/
             }catch (IOException e){
                 e.printStackTrace();
             }
+
+
             return null;
         }
 
@@ -107,5 +243,35 @@ public class FragmentCinemas extends Fragment {
         protected void onCancelled(Void unused) {
             super.onCancelled(unused);
         }
+    }
+
+    public class Content_1 extends AsyncTask<Void, Void, Void> {
+
+        String url;
+        String addressItem;
+        public Content_1(String Url)
+        {
+           this.url = Url;
+        }
+
+
+
+        public String getAddressItem() {
+            return addressItem;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Document document = Jsoup.connect(url).get();
+                Element itemsaddr = document.selectFirst("span.theaterInfo_dataAddr");
+                addressItem = itemsaddr.data();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
     }
 }

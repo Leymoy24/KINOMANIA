@@ -41,23 +41,30 @@
 
         <TextView
             android:id="@+id/name_of_cinema"
-            android:layout_width="wrap_content"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
+            android:layout_marginTop="20dp"
+            android:text="@string/name_of_cinema"
             android:textColor="@color/textColor"
             android:textSize="18dp"
-            android:textStyle="bold"
-            android:text="@string/name_of_cinema" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/address_of_cinema"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name_of_cinema"
             android:layout_alignLeft="@+id/name_of_cinema"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
+            android:text="@string/address_of_cinema"
             android:textColor="@color/textColor"
-            android:textSize="18dp"
-            android:text="@string/address_of_cinema" />
+            android:textSize="18dp" />
 
 
     </RelativeLayout>

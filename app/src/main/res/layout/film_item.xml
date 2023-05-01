@@ -32,6 +32,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Название фильма"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
             android:textColor="@color/textColor"
             android:textSize="18dp"
             android:textStyle="bold"></TextView>
@@ -43,6 +46,9 @@
             android:layout_below="@+id/name_of_film"
             android:layout_alignLeft="@+id/name_of_film"
             android:layout_marginTop="15dp"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
             android:text="Жанр фильма"
             android:textColor="@color/textColor"
             android:textSize="18dp"></TextView>
@@ -54,6 +60,9 @@
             android:layout_below="@+id/genre_of_film"
             android:layout_alignLeft="@+id/genre_of_film"
             android:layout_marginTop="15dp"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
             android:text="Страна производства"
             android:textColor="@color/textColor"
             android:textSize="18dp"></TextView>

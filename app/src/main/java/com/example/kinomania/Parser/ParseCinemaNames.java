@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.List;
 
+
 public class ParseCinemaNames {
     public List<String> ParseName(Document doc)
     {
@@ -20,7 +21,7 @@ public class ParseCinemaNames {
 
     public static List<String> ParseUrls(Document doc)
     {
-        List list = null;
+        List<String> list = null;
         Elements items = doc.select("a.cinemaList_ref");
         for (Element item : items)
         {

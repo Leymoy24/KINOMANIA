@@ -5,8 +5,7 @@ import java.util.List;
 
 
 public class FilmSettings{
-    public String ScheduleUrl = "schedule/?date="; // мб сделать приватными поля...
-    public String MovieUrl = "&order=movie";
+    public int id;
     public String FilmName;
     public String DateTime;
     public String Genre;
@@ -17,9 +16,10 @@ public class FilmSettings{
     public List<String> Session;
     public List<String> Price;
 
-    public FilmSettings(String filmName,
+    public FilmSettings(int Number, String filmName,
                         String dateTimes, String genre, String description,
                         String imageUrl, String filmUrl, String filmCountry, List<String> session, List<String> price) {
+        //id = Number;
         FilmName = filmName;
         DateTime = dateTimes;
         Genre = genre;
@@ -47,20 +47,12 @@ public class FilmSettings{
         return Genre;
     }
 
-    public String getMovieUrl() {
-        return MovieUrl;
-    }
-
     public String getDescription() {
         return Description;
     }
 
     public String getFilmUrl() {
         return FilmUrl;
-    }
-
-    public String getScheduleUrl() {
-        return ScheduleUrl;
     }
 
     public String getImageUrl() {

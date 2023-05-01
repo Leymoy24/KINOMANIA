@@ -1,5 +1,7 @@
 package com.example.kinomania;
 
+import android.os.AsyncTask;
+
 import com.example.kinomania.Parser.CinemaSettings;
 import com.example.kinomania.Parser.FilmSettings;
 import com.example.kinomania.Parser.ParseCinemaAddresses;
@@ -122,7 +124,7 @@ public class Parse {
                     Price.add(price.text());
                 }
 
-                FilmSettings filmSettings = new FilmSettings(FilmName.get(i), date, Genre.get(i), Description.get(i),
+                FilmSettings filmSettings = new FilmSettings(1, FilmName.get(i), date, Genre.get(i), Description.get(i),
                         FilmImage.get(i), FilmUrl.get(i), FilmCountry.get(i), Session, Price);
                         filmSettings_.add(filmSettings);
 
