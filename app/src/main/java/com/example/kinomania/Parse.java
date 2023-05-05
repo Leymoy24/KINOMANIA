@@ -107,13 +107,15 @@ public class Parse {
             {
                 Document document_ = Jsoup.connect(FilmUrl.get(i)).get();
                 Description.addAll(Collections.singletonList(filmdescription.ParseDescription(document_)));
-                FilmImage.addAll(Collections.singletonList(filmImage.ParseImage(document, FilmName.get(i))));
+                FilmImage.addAll(Collections.singletonList(filmImage.ParseImage(document_, FilmName.get(i))));
             }
 
             for(int i = 0; i< FilmName.size(); i++)
             {
-                Elements items = document.select("[data-schedulesearch-item*='" + FilmName.get(i) + "'] span.session_time");
-                Elements prices = document.select("[data-schedulesearch-item*='" + FilmName.get(i) + "'] span.session_price");
+                Elements items = document.select("div[data-schedulesearch-item*=" + FilmName.get(i) + "]")
+                        .select("span.session_time");
+                Elements prices = document.select("div[data-schedulesearch-item*=" + FilmName.get(i) + "]")
+                        .select("span.session_price");
 
                 for (Element item : items)
                 {

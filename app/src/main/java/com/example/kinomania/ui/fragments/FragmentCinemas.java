@@ -1,16 +1,19 @@
-package com.example.kinomania;
+package com.example.kinomania.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -19,7 +22,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kinomania.data.models.Cinema;
+import com.example.kinomania.ui.activities.MainActivity;
+import com.example.kinomania.Parse;
 import com.example.kinomania.Parser.CinemaSettings;
+import com.example.kinomania.R;
+import com.example.kinomania.ui.adapters.CinemasAdapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,10 +35,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class FragmentCinemas extends Fragment {
@@ -43,8 +48,6 @@ public class FragmentCinemas extends Fragment {
     private ArrayList<Cinema> cinemaItems = new ArrayList<>();
     private ArrayList<CinemaSettings> cinemaSettings = new ArrayList<>();
     private ProgressBar progressBar;
-    Runnable runnable;
-    Thread secThread;
 
     public FragmentCinemas(){
         super(R.layout.fragment_cinemas);
@@ -60,7 +63,6 @@ public class FragmentCinemas extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //init();
     }
 
     @Override
@@ -84,6 +86,7 @@ public class FragmentCinemas extends Fragment {
         Content content = new Content();
         content.execute();
     }
+
 
     /*private void init(){
         progressBar.setVisibility(View.VISIBLE);
@@ -186,10 +189,12 @@ public class FragmentCinemas extends Fragment {
                 Elements itemsName = docu.select("div.cinemaList_name"); // имена кинотеатров
                 Log.i("Logcat", "searched all names");
 
-                Elements addr = docu.select("div.cinemaList_addr.as-mobile"); // адреса кинотеатров
-                for (int i = 0; i < itemsName.size(); i++)
+                Elements addr = docu.select("div.cinemaList_addr.as-mobile"); // адреса
+                Log.i("Logcat", "searched all addresses");
+                for (int i = 0; i < 100; i++)
                 {
-                    Cinema cinema = new Cinema(itemsName.get(i).text(), addr.get(i).text());
+                    String key_id = String.valueOf(i);
+                    Cinema cinema = new Cinema(itemsName.get(i).text(), addr.get(i).text(), listOfUrls.get(i), key_id, "0");
                     cinemaItems.add(cinema);
                 }
 
@@ -243,35 +248,5 @@ public class FragmentCinemas extends Fragment {
         protected void onCancelled(Void unused) {
             super.onCancelled(unused);
         }
-    }
-
-    public class Content_1 extends AsyncTask<Void, Void, Void> {
-
-        String url;
-        String addressItem;
-        public Content_1(String Url)
-        {
-           this.url = Url;
-        }
-
-
-
-        public String getAddressItem() {
-            return addressItem;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                Document document = Jsoup.connect(url).get();
-                Element itemsaddr = document.selectFirst("span.theaterInfo_dataAddr");
-                addressItem = itemsaddr.data();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-
     }
 }

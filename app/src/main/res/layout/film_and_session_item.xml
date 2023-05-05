@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/backgroundColor">
+
+    <ImageView
+        android:id="@+id/image_of_film"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutSessionPrice"
+        app:layout_constraintLeft_toRightOf="@+id/image_of_film">
+
+        <TextView
+            android:id="@+id/name_of_film"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="Название фильма"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
+            android:textColor="@color/textColor"
+            android:textSize="20dp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/genre_of_film"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_of_film"
+            android:layout_alignLeft="@+id/name_of_film"
+            android:layout_marginTop="15dp"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
+            android:text="Жанр фильма"
+            android:textColor="@color/textColor"
+            android:textSize="20dp"></TextView>
+
+        <TextView
+            android:id="@+id/country_of_production"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/genre_of_film"
+            android:layout_alignLeft="@+id/genre_of_film"
+            android:layout_marginTop="15dp"
+            android:minLines="1"
+            android:maxLines="10"
+            android:singleLine = "false"
+            android:text="Страна производства"
+            android:textColor="@color/textColor"
+            android:textSize="20dp"></TextView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSessionPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_of_film"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="20"
+            android:minLines="1"
+            android:singleLine="false"
+            android:lineSpacingExtra="15dp"
+            android:text="начало сеанса"
+            android:textColor="@color/textColor"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/moneyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="20"
+            android:minLines="1"
+            android:singleLine="false"
+            android:lineSpacingExtra="15dp"
+            android:text="цена сеанса"
+            android:textColor="@color/textColor"
+            android:textSize="25dp" />
+    </LinearLayout>
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/formsColor"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutSessionPrice"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.kinomania;
+package com.example.kinomania.ui.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kinomania.data.models.Film;
+import com.example.kinomania.R;
 
 import java.util.List;
 
@@ -28,7 +31,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(CinemasAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(FilmsAdapter.OnItemClickListener onItemClickListener) {
         this.listener = listener;
     }
 
@@ -57,7 +60,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
         holder.nameTextView.setText(film.getName());
         holder.genreTextView.setText(film.getGenre());
         holder.countryTextView.setText(film.getCountry());
-        //holder.imageFilm.setImage(film.getFilmImage());
+        //holder.imageFilm.setImage(film.getFilmImage()); ???
 
         /* Обработчик нажатия на элемент
         holder.itemView.setOnClickListener(new View.OnClickListener() {

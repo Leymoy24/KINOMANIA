@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view_navigation_bar"
-        android:name="com.example.kinomania.FragmentNavigationBar"
+        android:name="com.example.kinomania.ui.fragments.FragmentNavigationBar"
         tools:layout="@layout/fragment_navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
