@@ -1,21 +1,35 @@
-package com.example.kinomania;
+package com.example.kinomania.data.models;
 
 import java.util.ArrayList;
 
 public class Film {
-    private String name, genre, country, description, imageUrl, filmUrl;
+    private String name, genre, country, description, imageUrl, filmUrl, key;
     private ArrayList<String> prices;
     private ArrayList<String> sessions;
 
-    public Film(String name, String genre, String country, String description, String imageUrl, String filmUrl, ArrayList<String> prices, ArrayList<String> sessions) {
+    public Film(String key, String name, String genre, String country, String description, String imageUrl, String filmUrl, ArrayList<String> prices,
+    ArrayList<String> sessions) {
+        this.key = key;
         this.name = name;
         this.genre = genre;
         this.country = country;
         this.description = description;
         this.imageUrl = imageUrl;
         this.filmUrl = filmUrl;
-        this.prices = prices;
-        this.sessions = sessions;
+        this.prices = new ArrayList<>();
+        this.sessions = new ArrayList<>();
+        this.prices.addAll(prices);
+        this.sessions.addAll(sessions);
+    }
+
+    public Film(String key_id, String name, String genre, String country, String description, String imageUrl, String filmUrl) {
+        this.key = key_id;
+        this.name = name;
+        this.genre = genre;
+        this.country = country;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.filmUrl = filmUrl;
     }
 
     public void setDescription(String description) {

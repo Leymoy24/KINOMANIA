@@ -8,7 +8,7 @@
     tools:layout="@layout/fragment_films"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentFilms">
+    tools:context=".ui.fragments.FragmentFilms">
 
     <View
         android:id="@+id/topPanel"
@@ -45,12 +45,15 @@
         app:layout_constraintTop_toTopOf="@+id/topPanel"
         tools:ignore="MissingConstraints" />
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search_film"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/backgroundColor"
+        android:background="@drawable/searchview_background"
         android:focusable="false"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:iconifiedByDefault="false"
         android:queryHint="Найти фильм..."
         android:searchHintIcon="@color/backgroundDarkColor"
@@ -60,46 +63,6 @@
         app:layout_constraintTop_toBottomOf="@+id/topPanel"
         tools:ignore="MissingConstraints" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_view_films"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_film">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Выбрать дату"
-            android:textStyle="italic"
-            android:textColor="@color/textColor"
-            android:textSize="21dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="20dp"
-            android:layout_gravity="center"
-            tools:ignore="MissingConstraints"></TextView>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/right_pointer"></ImageView>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:layout_marginRight="20dp"
-            android:backgroundTint="@color/backgroundColor"
-            app:srcCompat="@drawable/calendar_icon"></ImageButton>
-    </LinearLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_films"
@@ -107,8 +70,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="210dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginTop="160dp"
         tools:ignore="MissingConstraints" />
 
 

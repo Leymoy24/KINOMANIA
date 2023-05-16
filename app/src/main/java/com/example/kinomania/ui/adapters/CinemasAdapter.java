@@ -21,7 +21,9 @@ import com.example.kinomania.data.models.Cinema;
 import com.example.kinomania.R;
 import com.example.kinomania.data.models.Favourite;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CinemasAdapter extends RecyclerView.Adapter<CinemasAdapter.CinemasViewHolder> {
 
@@ -32,6 +34,11 @@ public class CinemasAdapter extends RecyclerView.Adapter<CinemasAdapter.CinemasV
     public CinemasAdapter(Context context, List<Cinema> Cinemas) {
         this.context = context;
         this.cinemas = Cinemas;
+    }
+
+    public void setFilteredCinemas(ArrayList<Cinema> filterCinemas){
+        this.cinemas = filterCinemas;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -74,11 +81,11 @@ public class CinemasAdapter extends RecyclerView.Adapter<CinemasAdapter.CinemasV
                     cinemaItem.setFavStatus("1");
                     db.insertIntoDatabase(cinemaItem.getName(), cinemaItem.getAddress(),
                             cinemaItem.getKey_id(), cinemaItem.getFavStatus());
-                    favouritebtn.setBackgroundResource(R.drawable.heart_in_cycle_red);
+                    favouritebtn.setImageResource(R.drawable.heart_in_cycle_red);
                 } else {
                     cinemaItem.setFavStatus("0");
                     db.remove_fav(cinemaItem.getKey_id());
-                    favouritebtn.setBackgroundResource(R.drawable.heart_in_cycle);
+                    favouritebtn.setImageResource(R.drawable.heart_in_cycle);
                 }
             });
         }
@@ -113,9 +120,9 @@ public class CinemasAdapter extends RecyclerView.Adapter<CinemasAdapter.CinemasV
                 cinemaItem.setFavStatus(item_fav_status);
 
                 if(item_fav_status != null && item_fav_status.equals("1")){
-                    viewHolder.favouritebtn.setBackgroundResource(R.drawable.heart_in_cycle_red);
+                    viewHolder.favouritebtn.setImageResource(R.drawable.heart_in_cycle_red);
                 } else if(item_fav_status != null && item_fav_status.equals("0")){
-                    viewHolder.favouritebtn.setBackgroundResource(R.drawable.heart_in_cycle);
+                    viewHolder.favouritebtn.setImageResource(R.drawable.heart_in_cycle);
                 }
             }
         } finally {

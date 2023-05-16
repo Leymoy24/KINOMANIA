@@ -10,14 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.SearchEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +40,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 public class FragmentCinemas extends Fragment {
@@ -48,10 +54,10 @@ public class FragmentCinemas extends Fragment {
     private ArrayList<Cinema> cinemaItems = new ArrayList<>();
     private ArrayList<CinemaSettings> cinemaSettings = new ArrayList<>();
     private ProgressBar progressBar;
+    private SearchView searchView;
 
     public FragmentCinemas(){
         super(R.layout.fragment_cinemas);
-        parse = new Parse();
     }
 
     @Override
@@ -74,8 +80,10 @@ public class FragmentCinemas extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         progressBar = view.findViewById(R.id.progressBarCinema);
         recyclerView = view.findViewById(R.id.recycler_view_cinemas);
+        searchView = view.findViewById(R.id.search_cinema);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
@@ -83,8 +91,37 @@ public class FragmentCinemas extends Fragment {
         adapter = new CinemasAdapter(mainActivity, cinemaItems);
         recyclerView.setAdapter(adapter);
 
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
+
         Content content = new Content();
         content.execute();
+    }
+
+    private void filterList(String text) {
+        ArrayList<Cinema> filterCinemas = new ArrayList<>();
+        for(Cinema item: cinemaItems){
+            if(item.getName().toLowerCase().contains(text.toLowerCase())){
+                filterCinemas.add(item);
+            }
+        }
+
+        if(filterCinemas.isEmpty()){
+            Toast.makeText(getContext(), "Не найдено!", Toast.LENGTH_SHORT).show();
+        } else{
+            adapter.setFilteredCinemas(filterCinemas);
+        }
     }
 
 
@@ -193,7 +230,7 @@ public class FragmentCinemas extends Fragment {
                 Log.i("Logcat", "searched all addresses");
                 for (int i = 0; i < 100; i++)
                 {
-                    String key_id = String.valueOf(i);
+                    String key_id = String.valueOf(i + 1);
                     Cinema cinema = new Cinema(itemsName.get(i).text(), addr.get(i).text(), listOfUrls.get(i), key_id, "0");
                     cinemaItems.add(cinema);
                 }
@@ -239,8 +276,6 @@ public class FragmentCinemas extends Fragment {
             }catch (IOException e){
                 e.printStackTrace();
             }
-
-
             return null;
         }
 

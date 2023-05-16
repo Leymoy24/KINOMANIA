@@ -8,7 +8,7 @@
     android:background="@color/backgroundColor"
     android:name="com.example.kinomania.FragmentCinemas"
     tools:layout="@layout/fragment_cinemas"
-    tools:context=".FragmentCinemas"
+    tools:context=".ui.fragments.FragmentCinemas"
     tools:ignore="MissingClass">
 
     <View
@@ -47,12 +47,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search_cinema"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/backgroundColor"
         android:focusable="false"
+        android:background="@drawable/searchview_background"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:iconifiedByDefault="false"
         android:queryHint="Найти кинотеатр..."
         android:searchHintIcon="@color/backgroundDarkColor"

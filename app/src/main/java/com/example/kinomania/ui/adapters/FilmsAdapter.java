@@ -1,7 +1,12 @@
 package com.example.kinomania.ui.adapters;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +16,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kinomania.data.models.Cinema;
 import com.example.kinomania.data.models.Film;
 import com.example.kinomania.R;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHolder> {
 
     Context context;
     private List<Film> films;
-    private FilmsAdapter.OnItemClickListener listener;
 
     public FilmsAdapter(Context context, List<Film> Films) {
         this.context = context;
         this.films = Films;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(FilmsAdapter.OnItemClickListener onItemClickListener) {
-        this.listener = listener;
+    public void setFilteredFilms(ArrayList<Film> filterFilms){
+        this.films = filterFilms;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -43,34 +47,36 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
     }
 
     public static class FilmsViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTextView, genreTextView, countryTextView;
+        TextView nameTextView, genreTextView, countryTextView, descriptionTextView, descrTextView;
         ImageView imageFilm;
-        public FilmsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            nameTextView = itemView.findViewById(R.id.name_of_film);
-            genreTextView = itemView.findViewById(R.id.genre_of_film);
-            countryTextView = itemView.findViewById(R.id.country_of_production);
-            imageFilm = itemView.findViewById(R.id.image_of_film);
+        View view;
+        public FilmsViewHolder(@NonNull View filmItems) {
+            super(filmItems);
+            descrTextView = filmItems.findViewById(R.id.textDescription);
+            view = filmItems.findViewById(R.id.dividerView);
+            nameTextView = filmItems.findViewById(R.id.name_of_film);
+            genreTextView = filmItems.findViewById(R.id.genre_of_film);
+            countryTextView = filmItems.findViewById(R.id.country_of_production);
+            imageFilm = filmItems.findViewById(R.id.image_of_film);
+            descriptionTextView = filmItems.findViewById(R.id.description);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FilmsViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull FilmsViewHolder holder, int position) {
         Film film = films.get(position);
         holder.nameTextView.setText(film.getName());
         holder.genreTextView.setText(film.getGenre());
         holder.countryTextView.setText(film.getCountry());
-        //holder.imageFilm.setImage(film.getFilmImage()); ???
+        holder.descriptionTextView.setText(film.getDescription());
+        Picasso.get().load(film.getFilmImage()).into(holder.imageFilm);
 
-        /* Обработчик нажатия на элемент
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onItemClick(position);
-                }
-            }
-        });*/
+        holder.itemView.setOnClickListener(v->{
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(film.getFilmUrl()));
+            Log.i("Logcat", "go to webpage of " + film.getFilmUrl());
+            startActivity(context, browserIntent, null);
+            //Toast.makeText(this, "Расписание фильма не найдено", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

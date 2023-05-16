@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kinomania.data.models.Film;
 import com.example.kinomania.ui.activities.MainActivity;
@@ -45,12 +46,15 @@ public class FragmentCinemaElement extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private FragmentCinemaElementAdapter adapter;
+    FragmentFilms fragmentFilms;
     private ArrayList<Film> filmItems = new ArrayList<>();
+    private ArrayList<Film> filmItemsNoReplay = new ArrayList<>();
     MainActivity mainActivity;
 
     public FragmentCinemaElement() {
         super(R.layout.fragment_cinema_element);
         days = new ArrayList<>();
+        //fragmentFilms = new FragmentFilms();
     }
 
     @Override
@@ -114,8 +118,8 @@ public class FragmentCinemaElement extends Fragment {
         content.execute();
 
         data_first.setOnClickListener(v->{
-            date = df.format(dt.getTime());
-            Log.i("Logcat", "tap on 1 button");
+            Log.i("Logcat", "tap on 1 button " + date);
+            filmItems.clear();
             FragmentCinemaElement.Content content_1 = new FragmentCinemaElement.Content();
             content_1.execute();
         });
@@ -123,23 +127,27 @@ public class FragmentCinemaElement extends Fragment {
         data_second.setOnClickListener(v->{
             dt.roll(Calendar.DATE, 1);
             date = df.format(dt.getTime());
-            Log.i("Logcat", "tap on 2 button");
+            Log.i("Logcat", "tap on 2 button " + date);
+            filmItems.clear();
             FragmentCinemaElement.Content content_2 = new FragmentCinemaElement.Content();
             content_2.execute();
+            dt.roll(Calendar.DATE, -1);
         });
 
         data_third.setOnClickListener(v->{
             dt.roll(Calendar.DATE, 2);
             date = df.format(dt.getTime());
-            Log.i("Logcat", "tap on 3 button");
+            Log.i("Logcat", "tap on 3 button " + date);
+            filmItems.clear();
             FragmentCinemaElement.Content content_3 = new FragmentCinemaElement.Content();
             content_3.execute();
+            dt.roll(Calendar.DATE, -2);
         });
 
 
     }
 
-    private List<String> SetData()
+    private void SetData()
     {
         Calendar dt = Calendar.getInstance();
         DateFormat df = new SimpleDateFormat("d MMM\nE");
@@ -149,7 +157,6 @@ public class FragmentCinemaElement extends Fragment {
             dt.roll(Calendar.DATE, 1);
             days.add(df.format(dt.getTime()));
         }
-        return days;
     }
 
 
@@ -159,6 +166,7 @@ public class FragmentCinemaElement extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             progressBar.setVisibility(View.VISIBLE);
+            Toast.makeText(mainActivity, "Ожидайте обновления", Toast.LENGTH_SHORT);
             progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_in));
         }
 
@@ -231,10 +239,17 @@ public class FragmentCinemaElement extends Fragment {
                     }
                     Log.i("Logcat", " parse sessions and prices");
 
-                    Film film = new Film(itemsFilmName.get(i).text(), itemsFilmGenre.get(i).text(),
+                    String key = String.valueOf(i + 1);
+
+                    Film film = new Film(key, itemsFilmName.get(i).text(), itemsFilmGenre.get(i).text(),
                             itemsFilmCountry.get(i).text(), description.get(i), imageLink.get(i),
-                            itemsFilmUrl.get(i).text(), Price, Session);
+                            listOfFilmUrls.get(i), Price, Session);
                     filmItems.add(film);
+
+                    if (!filmItemsNoReplay.contains(film))
+                    {
+                        filmItemsNoReplay.add(film);
+                    }
 
                     Session.clear();
                     Price.clear();
@@ -244,6 +259,8 @@ public class FragmentCinemaElement extends Fragment {
             }catch (IOException e){
                 e.printStackTrace();
             }
+
+            //fragmentFilms.setFilmItems(filmItemsNoReplay);
             return null;
         }
 
