@@ -8,7 +8,7 @@
     tools:layout="@layout/fragment_favourites"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentFavourites">
+    tools:context=".ui.fragments.FragmentFavourites">
 
     <View
         android:id="@+id/topPanel"
@@ -37,7 +37,6 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topPanel"
-        android:layout_marginBottom="80dp"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
