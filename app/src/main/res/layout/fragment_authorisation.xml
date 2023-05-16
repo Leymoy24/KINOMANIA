@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_authorisation"
-    android:name="com.example.kinomania.FragmentAuthorisation"
+    android:id="@+id/fragment_registration"
+    android:name="com.example.kinomania.FragmentRegistration"
     android:background="@color/backgroundColor"
     tools:layout="@layout/fragment_authorisation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentAuthorisation">
+    tools:context=".ui.fragments.FragmentRegistration">
 
     <View
         android:id="@+id/topPanel"
@@ -34,7 +34,7 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/Auth"
+        android:id="@+id/buttonRegistration"
         android:layout_width="230dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_view"
@@ -67,8 +67,8 @@
         android:id="@+id/GoToAuth"
         android:layout_width="210dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="40dp"
         android:layout_marginTop="50dp"
+        android:layout_marginLeft="30dp"
         android:background="@drawable/shape_view"
         android:backgroundTint="@color/backgroundDarkColor"
         android:text="Вернуться к авторизации"
@@ -76,7 +76,8 @@
         android:textSize="16dp"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Auth" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegistration"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
@@ -89,14 +90,27 @@
         android:textColorHint="@color/textColor"
         android:textSize="20dp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@id/editTextTextPassword"
+        app:layout_constraintBottom_toTopOf="@id/TextInputLayout"
         app:layout_constraintEnd_toEndOf="@+id/CenterPanel"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="@+id/CenterPanel"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
         tools:ignore="DuplicateClickableBoundsCheck" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/textColor"
+        android:textColorHint="@color/textColor"
+        app:layout_constraintBottom_toBottomOf="@+id/CenterPanel"
+        app:layout_constraintEnd_toEndOf="@+id/CenterPanel"
+        app:layout_constraintStart_toStartOf="@+id/CenterPanel"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress">
+
+        <EditText
         android:id="@+id/editTextTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,11 +120,9 @@
         android:textColorHint="@color/textColor"
         android:textStyle="italic"
         android:textColor="@color/textColor"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/CenterPanel"
-        app:layout_constraintEnd_toEndOf="@+id/CenterPanel"
-        app:layout_constraintStart_toStartOf="@+id/CenterPanel"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
+        android:textSize="20dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -137,7 +149,7 @@
         android:src="@drawable/right_pointer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/GoToAuth"
-        app:layout_constraintTop_toBottomOf="@+id/Auth"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegistration"
         tools:ignore="MissingConstraints"></ImageButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
