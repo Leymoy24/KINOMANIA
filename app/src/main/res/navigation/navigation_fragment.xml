@@ -7,27 +7,35 @@
 
     <fragment
         android:id="@+id/fragmentNavigationBar"
-        android:name="com.example.kinomania.FragmentNavigationBar"
+        android:name="com.example.kinomania.ui.fragments.FragmentNavigationBar"
         android:label="fragment_navigation_bar"
         tools:layout="@layout/fragment_navigation_bar" />
     <fragment
         android:id="@+id/fragmentCinemas"
-        android:name="com.example.kinomania.FragmentCinemas"
+        android:name="com.example.kinomania.ui.fragments.FragmentCinemas"
         android:label="fragment_cinemas"
-        tools:layout="@layout/fragment_cinemas" />
+        tools:layout="@layout/fragment_cinemas" >
+        <action
+            android:id="@+id/action_fragmentCinemas_to_fragmentCinemaElement"
+            app:destination="@id/fragmentCinemaElement" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentFilms"
-        android:name="com.example.kinomania.FragmentFilms"
+        android:name="com.example.kinomania.ui.fragments.FragmentFilms"
         android:label="fragment_films"
         tools:layout="@layout/fragment_films" />
     <fragment
         android:id="@+id/fragmentFavourites"
-        android:name="com.example.kinomania.FragmentFavourites"
+        android:name="com.example.kinomania.ui.fragments.FragmentFavourites"
         android:label="fragment_favourites"
-        tools:layout="@layout/fragment_favourites" />
+        tools:layout="@layout/fragment_favourites" >
+        <action
+            android:id="@+id/action_fragmentFavourites_to_fragmentCinemaElement"
+            app:destination="@id/fragmentCinemaElement" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentProfile"
-        android:name="com.example.kinomania.FragmentProfile"
+        android:name="com.example.kinomania.ui.fragments.FragmentProfile"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -36,11 +44,16 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentAuthorisation"
-        android:name="com.example.kinomania.FragmentAuthorisation"
+        android:name="com.example.kinomania.ui.fragments.FragmentRegistration"
         android:label="fragment_authorisation"
         tools:layout="@layout/fragment_authorisation" >
         <action
             android:id="@+id/action_fragmentAuthorisation_to_fragmentProfile"
             app:destination="@id/fragmentProfile" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentCinemaElement"
+        android:name="com.example.kinomania.ui.fragments.FragmentCinemaElement"
+        android:label="fragment_cinema_element"
+        tools:layout="@layout/fragment_cinema_element" />
 </navigation>
