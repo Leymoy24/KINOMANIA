@@ -6,9 +6,12 @@ public class Film {
     private String name, genre, country, description, imageUrl, filmUrl, key;
     private ArrayList<String> prices;
     private ArrayList<String> sessions;
+    private String NameCinema;
+
+    public Film(){};
 
     public Film(String key, String name, String genre, String country, String description, String imageUrl, String filmUrl, ArrayList<String> prices,
-    ArrayList<String> sessions) {
+    ArrayList<String> sessions, String nameCinema) {
         this.key = key;
         this.name = name;
         this.genre = genre;
@@ -20,6 +23,7 @@ public class Film {
         this.sessions = new ArrayList<>();
         this.prices.addAll(prices);
         this.sessions.addAll(sessions);
+        this.NameCinema = nameCinema;
     }
 
     public Film(String key_id, String name, String genre, String country, String description, String imageUrl, String filmUrl) {
@@ -30,6 +34,14 @@ public class Film {
         this.description = description;
         this.imageUrl = imageUrl;
         this.filmUrl = filmUrl;
+    }
+
+    public String getNameCinema() {
+        return NameCinema;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public void setDescription(String description) {

@@ -21,10 +21,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kinomania.data.models.Cinema;
 import com.example.kinomania.data.models.Film;
 import com.example.kinomania.ui.activities.MainActivity;
 import com.example.kinomania.R;
+import com.example.kinomania.ui.adapters.CinemasAdapter;
 import com.example.kinomania.ui.adapters.FragmentCinemaElementAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,17 +52,16 @@ public class FragmentCinemaElement extends Fragment {
     public ArrayList<String> days;
     public String date;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
     private FragmentCinemaElementAdapter adapter;
-    FragmentFilms fragmentFilms;
     private ArrayList<Film> filmItems = new ArrayList<>();
-    private ArrayList<Film> filmItemsNoReplay = new ArrayList<>();
+    String CinemaName;
     MainActivity mainActivity;
+    private DatabaseReference myRef;
+    com.google.firebase.database.FirebaseDatabase database;
 
     public FragmentCinemaElement() {
         super(R.layout.fragment_cinema_element);
         days = new ArrayList<>();
-        //fragmentFilms = new FragmentFilms();
     }
 
     @Override
@@ -66,6 +73,8 @@ public class FragmentCinemaElement extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Cinemas");
     }
 
     @Override
@@ -74,6 +83,7 @@ public class FragmentCinemaElement extends Fragment {
         return inflater.inflate(R.layout.fragment_cinema_element, container, false);
     }
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -81,14 +91,10 @@ public class FragmentCinemaElement extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
 
-        adapter = new FragmentCinemaElementAdapter(mainActivity, filmItems);
-        recyclerView.setAdapter(adapter);
-
-        progressBar = view.findViewById(R.id.progressBarFilm);
-
-        TextView cinemaName, cinemaAddress;
+        TextView cinemaName, cinemaAddress, emptyTextView;
         cinemaName = view.findViewById(R.id.cinemaNameTextView);
         cinemaAddress = view.findViewById(R.id.cinemaAddressTextView);
+        emptyTextView = view.findViewById(R.id.EmptyTextView);
 
         Button data_first, data_second, data_third;
         data_first = view.findViewById(R.id.dataFirstButton);
@@ -99,6 +105,7 @@ public class FragmentCinemaElement extends Fragment {
         if (bundle != null) {
             if (bundle.containsKey("cinemaName"))
                 cinemaName.setText(bundle.getString("cinemaName"));
+                CinemaName = bundle.getString("cinemaName");
             if(bundle.containsKey("cinemaAddress"))
                cinemaAddress.setText(bundle.getString("cinemaAddress"));
             if(bundle.containsKey("cinemaUrl"))
@@ -114,14 +121,57 @@ public class FragmentCinemaElement extends Fragment {
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         date = df.format(dt.getTime());
 
-        FragmentCinemaElement.Content content = new FragmentCinemaElement.Content();
-        content.execute();
+        Query query = myRef;
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                filmItems.clear();
+                for (DataSnapshot dataSnapshot1 : snapshot.child(CinemaName).child(date).getChildren()) {
+                    Film film = dataSnapshot1.getValue(Film.class);
+                    filmItems.add(film);
+                }
+
+                adapter = new FragmentCinemaElementAdapter(mainActivity, filmItems);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                if (filmItems.isEmpty())
+                    emptyTextView.setVisibility(View.VISIBLE);
+                else
+                    emptyTextView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         data_first.setOnClickListener(v->{
             Log.i("Logcat", "tap on 1 button " + date);
             filmItems.clear();
-            FragmentCinemaElement.Content content_1 = new FragmentCinemaElement.Content();
-            content_1.execute();
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    filmItems.clear();
+                    for (DataSnapshot dataSnapshot1 : snapshot.child(CinemaName).child(date).getChildren()) {
+                        Film film = dataSnapshot1.getValue(Film.class);
+                        filmItems.add(film);
+                    }
+
+                    adapter = new FragmentCinemaElementAdapter(mainActivity, filmItems);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    if (filmItems.isEmpty())
+                        emptyTextView.setVisibility(View.VISIBLE);
+                    else
+                        emptyTextView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         });
 
         data_second.setOnClickListener(v->{
@@ -129,8 +179,29 @@ public class FragmentCinemaElement extends Fragment {
             date = df.format(dt.getTime());
             Log.i("Logcat", "tap on 2 button " + date);
             filmItems.clear();
-            FragmentCinemaElement.Content content_2 = new FragmentCinemaElement.Content();
-            content_2.execute();
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    filmItems.clear();
+                    for (DataSnapshot dataSnapshot1 : snapshot.child(CinemaName).child(date).getChildren()) {
+                        Film film = dataSnapshot1.getValue(Film.class);
+                        filmItems.add(film);
+                    }
+
+                    adapter = new FragmentCinemaElementAdapter(mainActivity, filmItems);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    if (filmItems.isEmpty())
+                        emptyTextView.setVisibility(View.VISIBLE);
+                    else
+                        emptyTextView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             dt.roll(Calendar.DATE, -1);
         });
 
@@ -139,8 +210,29 @@ public class FragmentCinemaElement extends Fragment {
             date = df.format(dt.getTime());
             Log.i("Logcat", "tap on 3 button " + date);
             filmItems.clear();
-            FragmentCinemaElement.Content content_3 = new FragmentCinemaElement.Content();
-            content_3.execute();
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    filmItems.clear();
+                    for (DataSnapshot dataSnapshot1 : snapshot.child(CinemaName).child(date).getChildren()) {
+                        Film film = dataSnapshot1.getValue(Film.class);
+                        filmItems.add(film);
+                    }
+
+                    adapter = new FragmentCinemaElementAdapter(mainActivity, filmItems);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    if (filmItems.isEmpty())
+                        emptyTextView.setVisibility(View.VISIBLE);
+                    else
+                        emptyTextView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             dt.roll(Calendar.DATE, -2);
         });
 
@@ -156,117 +248,6 @@ public class FragmentCinemaElement extends Fragment {
         {
             dt.roll(Calendar.DATE, 1);
             days.add(df.format(dt.getTime()));
-        }
-    }
-
-
-    public class Content extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-            Toast.makeText(mainActivity, "Ожидайте обновления", Toast.LENGTH_SHORT);
-            progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_in));
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
-            progressBar.setVisibility(View.GONE);
-            progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_out));
-            adapter.notifyDataSetChanged();
-        }
-
-        @SuppressLint("WrongThread")
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try{
-                String ScheduleUrl = "schedule/?date=";
-                String MovieUrl = "&order=movie";
-                Log.i("Logcat", "date: " + date);
-
-                String ListFilmURL = urlOfCinema + ScheduleUrl + date + MovieUrl;
-                Document document = Jsoup.connect(ListFilmURL).get();
-                Log.i("Logcat", "connect to webpage");
-                Elements itemsFilmName = document.select("span.showtimesMovie_name"); // названия фильмов
-                Log.i("Logcat", "parse film names " + itemsFilmName.size());
-                Elements itemsFilmGenre = document.select("span.showtimesMovie_categories"); // жанры фильмов
-                Log.i("Logcat", "parse film genres");
-                Elements itemsFilmCountry = document.select("span.showtimesMovie_details"); // страны производства фильмов
-                Log.i("Logcat", "Country film:" + itemsFilmCountry.size());
-                Elements itemsFilmUrl = document.select("a.showtimesMovie_link");
-                ArrayList<String> listOfFilmUrls = new ArrayList<>();
-                for(Element url : itemsFilmUrl) {
-                    String value = url.attr("href"); // ссылки на фильмы
-                    listOfFilmUrls.add(value);
-                    Log.i("Logcat", "Url Film: " + value);
-                }
-
-                ArrayList<String> description = new ArrayList<>();
-                ArrayList<String> imageLink = new ArrayList<>();
-
-                int size = listOfFilmUrls.size();
-                for(int i = 0; i < size; i++)
-                {
-                    Document document_ = Jsoup.connect(listOfFilmUrls.get(i)).get();
-                    Element itemDescription = document_.selectFirst("div.visualEditorInsertion.filmDesc_editor.more_content").selectFirst("p");
-                    description.add(itemDescription.text());
-                    Log.i("Logcat", "Description film:" + itemDescription.text());
-                    Element itemsFilmPoster = document_.selectFirst("div.filmInfo_poster");
-                    String image_link = itemsFilmPoster.select("a.filmInfo_posterLink").attr("href");
-                    Log.i("Logcat", "Url image:" + image_link);
-                    imageLink.add(image_link);
-                }
-
-                int size_1 = itemsFilmName.size();
-                ArrayList<String> Session = new ArrayList<>();
-                ArrayList<String> Price = new ArrayList<>();
-
-                for(int i = 0; i < size_1; i++) {
-                    Elements sessions = document.selectFirst("div[data-schedulesearch-item*=" + itemsFilmName.get(i).text() + "]").
-                            select("span.session_time");
-                    Elements prices = document.selectFirst("div[data-schedulesearch-item*=" + itemsFilmName.get(i).text() + "]").
-                            select("span.session_price");
-
-                    for (Element session : sessions) {
-                        Session.add(session.text());
-                        Log.i("Logcat", "session film: " + Session);
-                    }
-                    for (Element price : prices) {
-                        Price.add(price.text());
-                        Log.i("Logcat", "price film: " + Price);
-                    }
-                    Log.i("Logcat", " parse sessions and prices");
-
-                    String key = String.valueOf(i + 1);
-
-                    Film film = new Film(key, itemsFilmName.get(i).text(), itemsFilmGenre.get(i).text(),
-                            itemsFilmCountry.get(i).text(), description.get(i), imageLink.get(i),
-                            listOfFilmUrls.get(i), Price, Session);
-                    filmItems.add(film);
-
-                    if (!filmItemsNoReplay.contains(film))
-                    {
-                        filmItemsNoReplay.add(film);
-                    }
-
-                    Session.clear();
-                    Price.clear();
-                }
-                description.clear();
-                imageLink.clear();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-
-            //fragmentFilms.setFilmItems(filmItemsNoReplay);
-            return null;
-        }
-
-        @Override
-        protected void onCancelled(Void unused) {
-            super.onCancelled(unused);
         }
     }
 }

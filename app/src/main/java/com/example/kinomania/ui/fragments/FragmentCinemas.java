@@ -2,19 +2,14 @@ package com.example.kinomania.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.SearchEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import android.widget.Toast;
@@ -32,6 +27,16 @@ import com.example.kinomania.Parse;
 import com.example.kinomania.Parser.CinemaSettings;
 import com.example.kinomania.R;
 import com.example.kinomania.ui.adapters.CinemasAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,23 +46,25 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Queue;
 
 
 public class FragmentCinemas extends Fragment {
 
     MainActivity mainActivity;
-    Parse parse;
-    public String BaseUrl = "https://msk.kinoafisha.info/cinema/";
     private RecyclerView recyclerView;
     private CinemasAdapter adapter;
-    private ArrayList<Cinema> cinemaItems = new ArrayList<>();
+    private ArrayList<Cinema> cinemaItems;
     private ArrayList<CinemaSettings> cinemaSettings = new ArrayList<>();
     private ProgressBar progressBar;
     private SearchView searchView;
+    private DatabaseReference myRef;
+    com.google.firebase.database.FirebaseDatabase database;
+
 
     public FragmentCinemas(){
         super(R.layout.fragment_cinemas);
+        cinemaItems = new ArrayList<>();
     }
 
     @Override
@@ -69,6 +76,8 @@ public class FragmentCinemas extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Cinemas");
     }
 
     @Override
@@ -88,8 +97,35 @@ public class FragmentCinemas extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
 
-        adapter = new CinemasAdapter(mainActivity, cinemaItems);
-        recyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_in));
+
+
+
+        Query query = myRef;
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cinemaItems.clear();
+                for(int i = 0; i < 20; i++){
+                    for (DataSnapshot dataSnapshot1 : snapshot.child(String.valueOf(i)).getChildren()) {
+                        Cinema cinema = dataSnapshot1.getValue(Cinema.class);
+                        cinemaItems.add(cinema);
+                    }
+                }
+                adapter = new CinemasAdapter(mainActivity, cinemaItems);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        progressBar.setVisibility(View.GONE);
+        progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_out));
 
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -104,9 +140,6 @@ public class FragmentCinemas extends Fragment {
                 return true;
             }
         });
-
-        Content content = new Content();
-        content.execute();
     }
 
     private void filterList(String text) {
@@ -124,73 +157,6 @@ public class FragmentCinemas extends Fragment {
         }
     }
 
-
-    /*private void init(){
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_in));
-
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                getWeb();
-            }
-        };
-        secThread = new Thread(runnable);
-        secThread.start();
-    }
-
-    private void getWeb(){
-        try {
-            Document doc = Jsoup.connect(BaseUrl).get();
-
-            List<String> listName = null;
-            Elements items = doc.select("div.cinemaList_name");
-            for (Element item : items)
-            {
-                listName.add(item.text());
-            }
-
-            List<String> list = null;
-            Elements itemsurl = doc.select("a.cinemaList_ref");
-            for (Element item : itemsurl)
-            {
-                String value = item.attr("href");
-                list.add(value);
-            }
-
-            for (int i = 0; i < list.size(); i++) {
-                Document document = Jsoup.connect(list.get(i)).get();
-                String listaddr = "";
-                Elements itemsaddr = document.select("span.theaterInfo_dataAddr");
-                for (Element item : itemsaddr) {
-                    listaddr = item.text();
-                }
-                Cinema cinema = new Cinema(listName.get(i), listaddr);
-                cinemaItems.add(cinema);
-            }
-
-            cinemaSettings.addAll(parse.CinemaWorker(doc));
-            for(int i = 0; i < cinemaSettings.size(); i++) {
-                Cinema cinema = new Cinema(cinemaSettings.get(i).getName(), cinemaSettings.get(i).getAddress());
-                cinemaItems.add(cinema);
-            }
-
-            progressBar.setVisibility(View.GONE);
-            progressBar.startAnimation(AnimationUtils.loadAnimation(mainActivity, androidx.preference.R.anim.abc_fade_out));
-
-            mainActivity.runOnUiThread(new Runnable() {
-                public void run(){
-                    adapter.notifyDataSetChanged();
-                }
-            });
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-
-    @SuppressLint("StaticFieldLeak")
     public class Content extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -208,74 +174,8 @@ public class FragmentCinemas extends Fragment {
             adapter.notifyDataSetChanged();
         }
 
-        @SuppressLint("WrongThread")
         @Override
         protected Void doInBackground(Void... voids) {
-            try{
-                Document doc = Jsoup.connect(BaseUrl).get();
-                Log.i("Logcat", "connect to webpage");
-                Elements itemsUrl = doc.select("a.cinemaList_ref");
-                ArrayList<String> listOfUrls = new ArrayList<>();
-                for(Element url : itemsUrl) {
-                    String value = url.attr("href"); // ссылки на кинотеатры
-                    listOfUrls.add(value);
-                    Log.i("Logcat", "Url: " + value);
-                }
-
-                Document docu = Jsoup.connect("https://msk.kinoafisha.info/cinema/map/").get();
-                Elements itemsName = docu.select("div.cinemaList_name"); // имена кинотеатров
-                Log.i("Logcat", "searched all names");
-
-                Elements addr = docu.select("div.cinemaList_addr.as-mobile"); // адреса
-                Log.i("Logcat", "searched all addresses");
-                for (int i = 0; i < 100; i++)
-                {
-                    String key_id = String.valueOf(i + 1);
-                    Cinema cinema = new Cinema(itemsName.get(i).text(), addr.get(i).text(), listOfUrls.get(i), key_id, "0");
-                    cinemaItems.add(cinema);
-                }
-
-                /*for (int i = 0; i < 10; i++) !!
-                {
-                    String value = itemsurl.get(i).attr("href");
-
-
-                    Document document = Jsoup.connect(value).get();
-                    Thread.sleep(700);
-                    Log.i("Logcat", "connect to other webpage");
-
-                    Element itemsaddr = document.selectFirst("span.theaterInfo_dataAddr");
-                    String listaddr = "address here...";
-                    if(itemsaddr != null)
-                    {
-                        listaddr = itemsaddr.data();
-                    }
-                    Log.i("Logcat", "Address: " + listaddr);
-
-                    Cinema cinema = new Cinema(itemsName.get(i).text(), listaddr);
-                    cinemaItems.add(cinema); !!
-                }*/
-
-                //Log.i("Logcat", "search all urls");
-                /*for (int i = 0; i < listName.size(); i++) {
-                    //Document document = Jsoup.connect(list.get(i)).get();
-                    //String listaddr = "";
-                    //Elements itemsaddr = document.select("span.theaterInfo_dataAddr");
-                   // for (Element item : itemsaddr) {
-                   //     listaddr = item.text();
-                    //}
-                    Cinema cinema = new Cinema(listName.get(i), "listaddr");
-                    cinemaItems.add(cinema);
-                }*/
-                //Log.i("Logcat", "search all addresses");
-                /*cinemaSettings.addAll(parse.CinemaWorker(doc));
-                for(int i = 0; i < cinemaSettings.size(); i++){
-                    Cinema cinema = new Cinema(cinemaSettings.get(i).getName(), cinemaSettings.get(i).getAddress());
-                    cinemaItems.add(cinema);
-                }*/
-            }catch (IOException e){
-                e.printStackTrace();
-            }
             return null;
         }
 

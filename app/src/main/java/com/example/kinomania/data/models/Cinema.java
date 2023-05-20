@@ -3,6 +3,8 @@ package com.example.kinomania.data.models;
 public class Cinema {
     private String name, address, url, favStatus, key_id;
 
+    public Cinema (){};
+
     public Cinema(String name, String address, String url, String key_id, String favStatus){
         this.name = name;
         this.address = address;

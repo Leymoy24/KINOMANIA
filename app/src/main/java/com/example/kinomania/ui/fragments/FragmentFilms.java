@@ -26,7 +26,14 @@ import com.example.kinomania.Parse;
 import com.example.kinomania.Parser.FilmSettings;
 import com.example.kinomania.Parser.ParseCinemaNames;
 import com.example.kinomania.R;
+import com.example.kinomania.ui.adapters.CinemasAdapter;
 import com.example.kinomania.ui.adapters.FilmsAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,6 +57,8 @@ public class FragmentFilms extends Fragment {
     private ArrayList<Film> filmItems = new ArrayList<>();
     private ProgressBar progressBar;
     SearchView searchView;
+    private DatabaseReference myRef;
+    com.google.firebase.database.FirebaseDatabase database;
 
     public FragmentFilms() {
         super(R.layout.fragment_films);
@@ -64,7 +73,8 @@ public class FragmentFilms extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Cinemas");
     }
 
     @Override
@@ -101,8 +111,27 @@ public class FragmentFilms extends Fragment {
             }
         });
 
-        FragmentFilms.Content content = new FragmentFilms.Content();
-        content.execute();
+        Query query = myRef;
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                filmItems.clear();
+                for(int i = 0; i < 20; i++){
+                    for (DataSnapshot dataSnapshot1 : snapshot.child("Film" + String.valueOf(i)).getChildren()) {
+                        Film film = dataSnapshot1.getValue(Film.class);
+                        filmItems.add(film);
+                    }
+                }
+                adapter = new FilmsAdapter(mainActivity, filmItems);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void filterList(String text) {
@@ -147,41 +176,6 @@ public class FragmentFilms extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            try {
-                Document doc = Jsoup.connect(BaseUrl).get();
-                Elements NameOfFilm = doc.select("a.movieItem_title");
-                Elements GenreOfFilm = doc.select("span.movieItem_genres");
-                Elements ProductionOfFilm = doc.select("span.movieItem_year");
-
-                List<String> Urls = new ArrayList<>();
-                for (Element UrlOfFilm : NameOfFilm){
-                    String value = UrlOfFilm.attr("href");
-                    Log.i("Logcat", "Url of film: " + value);
-                    Urls.add(value);
-                }
-                int size = Urls.size();
-                Log.i("Logcat", "Size of urls: " + Urls.size());
-                for (int i = 0; i < 20; i++)
-                {
-                    Log.i("Logcat", "Title of film: " + NameOfFilm.get(i).text());
-                    Log.i("Logcat", "Genre of film: " + GenreOfFilm.get(i).text());
-                    Log.i("Logcat", "Production of film: " + ProductionOfFilm.get(i).text());
-                    Document document = Jsoup.connect(Urls.get(i)).get();
-                    Element DescriptionOfFilm = document.selectFirst("div.visualEditorInsertion.filmDesc_editor.more_content").selectFirst("p");
-                    Log.i("Logcat", "Description: " + DescriptionOfFilm);
-                    Element itemsFilmPoster = document.selectFirst("a.filmInfo_posterLink");
-                    String image_link = itemsFilmPoster.attr("href");
-                    Log.i("Logcat", "Url image: " + image_link);
-
-                    String key_id = String.valueOf(i + 1);
-
-                    Film film = new Film(key_id, NameOfFilm.get(i).text(), GenreOfFilm.get(i).text(), ProductionOfFilm.get(i).text(),
-                            DescriptionOfFilm.text(), image_link, Urls.get(i));
-                    filmItems.add(film);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             return null;
         }
 
