@@ -2,6 +2,7 @@ package com.example.kinomania.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -148,6 +149,9 @@ public class FragmentCinemaElement extends Fragment {
 
         data_first.setOnClickListener(v->{
             Log.i("Logcat", "tap on 1 button " + date);
+            //data_first.setBackgroundColor(Color.parseColor("#C79ECF"));
+            ///data_second.setBackgroundColor(Color.parseColor("#D6C8FF"));
+            ///data_third.setBackgroundColor(Color.parseColor("#D6C8FF"));
             filmItems.clear();
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -178,6 +182,9 @@ public class FragmentCinemaElement extends Fragment {
             dt.roll(Calendar.DATE, 1);
             date = df.format(dt.getTime());
             Log.i("Logcat", "tap on 2 button " + date);
+            ///data_first.setBackgroundColor(Color.parseColor("#D6C8FF"));
+            ///data_second.setBackgroundColor(Color.parseColor("#C79ECF"));
+            //data_third.setBackgroundColor(Color.parseColor("#D6C8FF"));
             filmItems.clear();
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -209,6 +216,9 @@ public class FragmentCinemaElement extends Fragment {
             dt.roll(Calendar.DATE, 2);
             date = df.format(dt.getTime());
             Log.i("Logcat", "tap on 3 button " + date);
+            //data_first.setBackgroundColor(Color.parseColor("#D6C8FF"));
+            ///data_second.setBackgroundColor(Color.parseColor("#D6C8FF"));
+            ///data_third.setBackgroundColor(Color.parseColor("#C79ECF"));
             filmItems.clear();
             query.addValueEventListener(new ValueEventListener() {
                 @Override

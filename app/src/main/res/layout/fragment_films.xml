@@ -54,9 +54,9 @@
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="Найти фильм..."
-        android:searchHintIcon="@color/backgroundDarkColor"
+        app:iconifiedByDefault="false"
+        app:queryHint="Найти фильм..."
+        app:searchHintIcon="@color/backgroundDarkColor"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

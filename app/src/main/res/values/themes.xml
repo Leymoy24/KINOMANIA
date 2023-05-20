@@ -11,4 +11,7 @@
 
         <!-- Customize your theme here. -->
     </style>
+    <style name="search_cinema" parent="Widget.AppCompat.SearchView">
+        <item name="queryHint" >Найти кинотеатр...</item>
+    </style>
 </resources>
