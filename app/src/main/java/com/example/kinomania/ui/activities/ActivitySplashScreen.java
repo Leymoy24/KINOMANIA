@@ -211,10 +211,6 @@ public class ActivitySplashScreen extends AppCompatActivity {
                                     itemsFilmCountry.get(i).text(), description.get(i), imageLink.get(i),
                                     listOfFilmUrls.get(i), Price, Session, cinemaItems.get(k).getName());
                             filmItems.add(film);
-
-
-
-
                             Session.clear();
                             Price.clear();
                         }

@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class FavouritesDatabase extends SQLiteOpenHelper {
-
     private static int DB_VERSION = 1;
     private static String DATABASE_NAME = "CinemaDB";
     private static String TABLE_NAME = "favoriteTable";
@@ -24,16 +23,13 @@ public class FavouritesDatabase extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DB_VERSION);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
 
     //делаем пустую таблицу
     public void insertEmpty(){
@@ -46,7 +42,6 @@ public class FavouritesDatabase extends SQLiteOpenHelper {
             db.insert(TABLE_NAME, null, cv);
         }
     }
-
     //добавляем данные в БД
     public void insertIntoDatabase(String item_title, String item_address, String id, String fav_status){
         SQLiteDatabase db;
@@ -59,14 +54,12 @@ public class FavouritesDatabase extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, cv);
         Log.i("Logcat", item_title + ", favstatus - " + fav_status + "- . " + cv);
     }
-
     // считываем все данные
     public Cursor read_all_data(String id){
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = "select * from " + TABLE_NAME + " where " + KEY_ID + "=" + id +"";
         return db.rawQuery(sql, null, null);
     }
-
     //удаляем строку из БД
     public void remove_fav(String id){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -74,12 +67,10 @@ public class FavouritesDatabase extends SQLiteOpenHelper {
         db.execSQL(sql);
         Log.i("Logcat", "remove " + id.toString());
     }
-
     // выбираем весь лист с любимыми кинотеатрами
     public Cursor select_all_favorite_list(){
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + FAVOURITE_STATUS + " ='1'";
         return db.rawQuery(sql, null, null);
     }
-
 }

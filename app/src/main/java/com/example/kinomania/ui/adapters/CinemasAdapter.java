@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kinomania.data.databases.FavouritesDatabase;
 import com.example.kinomania.data.models.Cinema;
 import com.example.kinomania.R;
-import com.example.kinomania.data.models.Favourite;
 
 import java.util.ArrayList;
 import java.util.List;
